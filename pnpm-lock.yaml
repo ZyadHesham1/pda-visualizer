@@ -17,6 +17,9 @@ importers:
       react-dom:
         specifier: ^19.1.0
         version: 19.1.0(react@19.1.0)
+      react-flow:
+        specifier: ^1.0.3
+        version: 1.0.3
       tailwindcss:
         specifier: ^4.1.7
         version: 4.1.7
@@ -1352,6 +1355,9 @@ packages:
     resolution: {integrity: sha512-Xs1hdnE+DyKgeHJeJznQmYMIBG3TKIHJJT95Q58nHLSrElKlGQqDTR2HQ9fx5CN/Gk6Vh/kupBTDLU11/nDk/g==}
     peerDependencies:
       react: ^19.1.0
+
+  react-flow@1.0.3:
+    resolution: {integrity: sha512-Rx4Oqqbe9y7NyrUGzCrmtNvuGuMJBVjfIeMFuwbtbMc9f22sUSmxMjIA0c8r6Z7iMtB1zOWoGkTgfpmmpH9ReQ==}
 
   react-refresh@0.17.0:
     resolution: {integrity: sha512-z6F7K9bV85EfseRCp2bzrpyQ0Gkw1uLoCel9XBVWPg/TjRj94SkJzUTGfOa4bs7iJvBWtQG0Wq7wnI0syw3EBQ==}
@@ -2807,6 +2813,8 @@ snapshots:
     dependencies:
       react: 19.1.0
       scheduler: 0.26.0
+
+  react-flow@1.0.3: {}
 
   react-refresh@0.17.0: {}
 
