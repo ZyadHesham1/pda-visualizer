@@ -1,4 +1,4 @@
-import type { PDA } from "../pda.types";
+import type { PDA } from "../logic/pda.types";
 
 
 export const examplePDA: PDA = {

@@ -1,5 +1,4 @@
-
-import type { PDA, Configuration } from "../pda.types";
+import type { PDA, Configuration } from "./pda.types";
 
 // To serialize stack and state to avoid revisiting same config
 function serializeConfig(state: string, input: string, stack: string[]): string {
@@ -24,11 +23,11 @@ export function simulatePDA(pda: PDA, input: string): Configuration[] {
     const currentSymbol = remainingInput.length > 0 ? remainingInput[0] : 'ε';
 
     const possibleTransitions = pda.transitions.filter(t => {
-      return (
-        t.from === state &&
-        (t.input === currentSymbol || t.input === 'ε') &&
-        (t.pop === top || t.pop === 'ε')
-      );
+      const inputMatches = t.input === currentSymbol || t.input === 'ε';
+      const popMatches =
+        (t.pop === 'ε') || // ε means "no pop" (can always apply)
+        (stack.length > 0 && t.pop === stack[stack.length - 1]);
+      return t.from === state && inputMatches && popMatches;
     });
 
     for (const t of possibleTransitions) {
@@ -43,16 +42,23 @@ export function simulatePDA(pda: PDA, input: string): Configuration[] {
 
       // Push in reverse order (top is last)
       for (let i = t.push.length - 1; i >= 0; i--) {
-        nextStack.push(t.push[i]);
+        if (t.push[i] !== 'ε') {
+          nextStack.push(t.push[i]);
+        }
       }
 
       const newInput = inputConsumed ? remainingInput.slice(1) : remainingInput;
+
+      let actions: string[] = [];
+      if (stackPopped) actions.push(`pop ${t.pop}`);
+      if (t.push.some(x => x !== 'ε')) actions.push(`push ${t.push.filter(x => x !== 'ε').join(",")}`);
+      if (inputConsumed) actions.push(`match ${t.input}`);
 
       const config: Configuration = {
         state: nextState,
         input: newInput,
         stack: [...nextStack],
-        history: `(${state}, ${t.input}, ${t.pop}) → (${nextState}, ${t.push.join('') || 'ε'})`
+        history: actions.join("; ") || "ε-move"
       };
 
       const newTrace = [...trace, config];
